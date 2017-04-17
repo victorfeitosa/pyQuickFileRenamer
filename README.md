@@ -7,24 +7,28 @@ pyQuickFileRenamer
 qfr.py [-h] [-R] [-F] (-rm string | -rs string | -rp string) dir
 ```
 
-Renames or removes files by searching for bits of strings.
+## Positional arguments: ##
+  <b>dir</b>                   Directory to search for files.
 
-positional arguments:
-  dir                   Directory to search for files.
+## Optional arguments: ##
+  <b>-h, --help</b>:            show this help message and exit
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -R, --recursive       Operates recursively into the directory tree.
-  -F, --folder          Operates on folders as well.
-  -rm string, --removefile string
+  <b>-R, --recursive</b>:       Operates recursively into the directory tree.
+
+  <b>-F, --folder</b>:          Operates on folders as well.
+
+  <b>-rm string, --removefile string</b>:
                         Removes a file based on a string search.
-  -rs string, --removestring string
+
+  <b>-rs string, --removestring string</b>:
                         Removes a string from the filename based on a string
                         search
-  -rp string, --replacestring string
+
+  <b>-rp string, --replacestring string</b>:
                         Replaces a string in the filename based on a string
                         search
 
-# TODO #
+---
+## TODO
  - Implement functionalities
  - ask for permission if directory requires super user
