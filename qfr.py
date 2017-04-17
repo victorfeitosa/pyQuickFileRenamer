@@ -3,40 +3,52 @@ from os import listdir, path, walk
 
 
 def removeFiles(directory, argString):
+    """ Remove files from the directory that contain the string passed to
+     the program. """
     print('Removing files...')
     print(listdir(directory))
 
 
 def removeFilesRecursive(directory, argString):
+    """ Remove files recursively from the directory that contain the string
+     passed to the program recursively. """
     print('Removing files...')
     for (dirpath, dirname, filenames) in walk(directory):
         print(filenames)
 
 
 def removeString(directory, argString):
+    """ Remove string from the files on the directory passed to
+     the program. """
     print('Removing string from files...')
     print(listdir(directory))
 
 
 def removeStringRecursive(directory, argString):
+    """ Remove string from the files on the directory passed to
+     the program recursively. """
     print('Removing string from files...')
     for (dirpath, dirname, filenames) in walk(directory):
         print(filenames)
 
 
 def replaceString(directory, argString):
+    """ Replaces a string in the filenames passed as an argument
+     to the program. """
     print('Renaming files...')
     print(listdir(directory))
 
 
 def replaceStringRecursive(directory, argString):
+    """ Replaces a string in the filenames passed as an argument
+     to the program recursively. """
     print('Renaming files...')
     for (dirpath, dirname, filenames) in walk(directory):
         print(filenames)
 
 
 def main():
-    """Main function, used to parse arguments and execute actions"""
+    """ Main function, used to parse arguments and execute actions """
 
     parser = argparse.ArgumentParser(description='Renames or removes files' +
                                      ' by searching for bits of strings.')
