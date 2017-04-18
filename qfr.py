@@ -1,5 +1,6 @@
 import argparse
-from os import listdir, path, walk, remove, rename
+import os
+from os import access, listdir, path, remove, rename, walk
 
 
 def removeFiles(directory, argString, verbose=False):
@@ -120,11 +121,17 @@ def main():
                           help='Replaces a string in the filename based on ' +
                           'a string search')
 
+    # parses arguments from cli
     args = parser.parse_args()
 
+    # gets full path to the directory
     absdir = path.abspath(args.directory)
-    print(args)
+    if not access(absdir, os.W_OK):
+        print('Error, unable to access directory "{0}" for writing.'
+              .format(absdir), 'Try running as an administrator.')
+        exit()
 
+    # executes actions for each option
     if(args.rmfile is not None):
         if (args.recursive is True):
             removeFilesRecursive(absdir, args.rmfile[0], args.verbose)
@@ -143,4 +150,5 @@ def main():
             replaceString(absdir, args.rpstr[0], args.rpstr[1], args.verbose)
 
 
+# runs main program
 main()
