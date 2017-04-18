@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import argparse
 import os
 from os import access, listdir, path, remove, rename, walk
