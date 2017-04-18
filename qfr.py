@@ -1,15 +1,24 @@
 import argparse
-from os import listdir, path, walk
+from os import listdir, path, walk, remove, rename
 
 
-def removeFiles(directory, argString):
+def removeFiles(directory, argString, verbose=False):
     """ Remove files from the directory that contain the string passed to
      the program. """
-    print('Removing files...')
-    print(listdir(directory))
+    if verbose:
+        print('Removing files from ', directory)
+
+    filelist = listdir(directory)
+    for file in filelist:
+        if(argString in file):
+            fullfilepath = path.join(directory, file)
+            if(verbose):
+                print("Removing ", fullfilepath)
+
+            remove(fullfilepath)
 
 
-def removeFilesRecursive(directory, argString):
+def removeFilesRecursive(directory, argString, verbose=False):
     """ Remove files recursively from the directory that contain the string
      passed to the program recursively. """
     print('Removing files...')
@@ -17,14 +26,28 @@ def removeFilesRecursive(directory, argString):
         print(filenames)
 
 
-def removeString(directory, argString):
+def removeString(directory, argString, verbose=False):
     """ Remove string from the files on the directory passed to
      the program. """
-    print('Removing string from files...')
-    print(listdir(directory))
+    if verbose:
+        print('Removing string from files from ', directory)
+
+    filelist = listdir(directory)
+    for file in filelist:
+        if(argString in file):
+            fullfilepath = path.join(directory, file)
+            if(verbose):
+                print("Renaming ", fullfilepath)
+
+            newfilename = file.replace(argString, '')
+            if newfilename is '':
+                newfilename = 'untitled'
+
+            newfullpath = path.join(directory, newfilename)
+            rename(fullfilepath, newfullpath)
 
 
-def removeStringRecursive(directory, argString):
+def removeStringRecursive(directory, argString, verbose=False):
     """ Remove string from the files on the directory passed to
      the program recursively. """
     print('Removing string from files...')
@@ -32,14 +55,28 @@ def removeStringRecursive(directory, argString):
         print(filenames)
 
 
-def replaceString(directory, argString):
+def replaceString(directory, argString, replaceString, verbose=False):
     """ Replaces a string in the filenames passed as an argument
      to the program. """
-    print('Renaming files...')
-    print(listdir(directory))
+    if verbose:
+        print('Removing string from files from ', directory)
+
+    filelist = listdir(directory)
+    for file in filelist:
+        if(argString in file):
+            fullfilepath = path.join(directory, file)
+            if(verbose):
+                print("Renaming ", fullfilepath)
+
+            newfilename = file.replace(argString, replaceString)
+            if newfilename is '':
+                newfilename = 'untitled'
+
+            newfullpath = path.join(directory, newfilename)
+            rename(fullfilepath, newfullpath)
 
 
-def replaceStringRecursive(directory, argString):
+def replaceStringRecursive(directory, argString, replaceString, verbose=False):
     """ Replaces a string in the filenames passed as an argument
      to the program recursively. """
     print('Renaming files...')
@@ -64,6 +101,9 @@ def main():
     parser.add_argument('-F', '--folder', action='store_true',
                         dest='folder',
                         help='Operates on folders as well.')
+    parser.add_argument('-v', '--verbose', action='store_true',
+                        dest='verbose',
+                        help='Verbose mode.')
 
     # Add mutually exclusive arguments into a group
     argGroup = parser.add_mutually_exclusive_group()
@@ -75,7 +115,7 @@ def main():
                           metavar='string',
                           help='Removes a string from the filename based on ' +
                           'a string search')
-    argGroup.add_argument('-rp', '--replacestring', dest='rpstr', nargs=1,
+    argGroup.add_argument('-rp', '--replacestring', dest='rpstr', nargs=2,
                           metavar='string',
                           help='Replaces a string in the filename based on ' +
                           'a string search')
@@ -83,22 +123,24 @@ def main():
     args = parser.parse_args()
 
     absdir = path.abspath(args.directory)
+    print(args)
 
-    if(args.rmfile is True):
+    if(args.rmfile is not None):
         if (args.recursive is True):
-            removeFilesRecursive(absdir, args.searchstr)
+            removeFilesRecursive(absdir, args.rmfile[0], args.verbose)
         else:
-            removeFiles(absdir, args.searchstr)
-    elif(args.rmstr is True):
+            removeFiles(absdir, args.rmfile[0], args.verbose)
+    elif(args.rmstr is not None):
         if(args.recursive is True):
-            removeStringRecursive(absdir, args.searchstr)
+            removeStringRecursive(absdir, args.rmstr[0], args.verbose)
         else:
-            removeString(absdir, args.searchstr)
-    elif(args.rpstr is True):
+            removeString(absdir, args.rmstr[0], args.verbose)
+    elif(args.rpstr is not None):
         if(args.recursive is True):
-            replaceStringRecursive(absdir, args.searchstr)
+            replaceStringRecursive(absdir, args.rpstr[0], args.rpstr[1],
+                                   args.verbose)
         else:
-            replaceString(absdir, args.searchstr)
+            replaceString(absdir, args.rpstr[0], args.rpstr[1], args.verbose)
 
 
 main()
