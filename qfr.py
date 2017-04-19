@@ -22,7 +22,7 @@ def removeFiles(directory, argString, folder=False, verbose=False):
                 try:
                     removedirs(fullfilepath)
                 except OSError as err:
-                    print("Error.", err.strerror)
+                    print("Error.", err.strerror, fullfilepath)
             elif(path.isfile(fullfilepath)):
                 if(verbose):
                     print("Removing ", fullfilepath)
@@ -37,7 +37,7 @@ def removeFilesRecursive(directory, argString, folder=False, verbose=False):
     if verbose:
         print('Removing files...')
 
-    for (dirpath, dirname, filenames) in walk(directory):
+    for (dirpath, dirname, filenames) in walk(directory, topdown=False):
         for file in filenames:
             if(argString in file):
                 fullfilepath = path.join(dirpath, file)
@@ -46,6 +46,13 @@ def removeFilesRecursive(directory, argString, folder=False, verbose=False):
                     print(fullfilepath)
                 # finally, removes
                 remove(fullfilepath)
+
+        # Removes folder after removing all files
+        if(folder):
+            try:
+                removedirs(dirpath)
+            except OSError as err:
+                print("Error.", err.strerror, dirpath)
 
 
 def removeString(directory, argString, folder=False, verbose=False):
@@ -58,6 +65,8 @@ def removeString(directory, argString, folder=False, verbose=False):
     for file in filelist:
         if(argString in file):
             fullfilepath = path.join(directory, file)
+            if(path.isdir(fullfilepath) and not folder):
+                continue
             if(verbose):
                 print("Renaming ", fullfilepath)
 
@@ -75,7 +84,7 @@ def removeStringRecursive(directory, argString, folder=False, verbose=False):
     if verbose:
         print('Removing string from files...')
 
-    for (dirpath, dirname, filenames) in walk(directory):
+    for (dirpath, dirname, filenames) in walk(directory, topdown=False):
         for file in filenames:
             # finally, removes string
             if(argString in file):
@@ -94,6 +103,13 @@ def removeStringRecursive(directory, argString, folder=False, verbose=False):
                 # gets the new full path of the file, and then, renames it
                 newfullpath = path.join(dirpath, newfilename)
                 rename(fullfilepath, newfullpath)
+
+        # removes string from folder if enabled
+        if(folder):
+            for folder in dirname:
+                newdirname = folder.replace(argString, '')
+                rename(path.join(dirpath, folder), path.join(dirpath,
+                                                             newdirname))
 
 
 def replaceString(directory, argString, replaceString, folder=False,
@@ -163,6 +179,9 @@ def main():
     parser.add_argument('-F', '--folder', action='store_true',
                         dest='folder',
                         help='Operates on folders as well.')
+    parser.add_argument('-f', '--force', action='store_true',
+                        dest='force',
+                        help='Forces removal of non-empty folders.')
     parser.add_argument('-v', '--verbose', action='store_true',
                         dest='verbose',
                         help='Verbose mode.')
