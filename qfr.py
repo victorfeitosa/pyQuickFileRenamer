@@ -2,12 +2,13 @@
 
 import argparse
 import os
-from os import access, listdir, path, remove, rename, walk
+from os import access, listdir, path, rename, remove, removedirs, walk
 
 
 def removeFiles(directory, argString, folder=False, verbose=False):
     """ Remove files from the directory that contain the string passed to
      the program. """
+
     if verbose:
         print('Removing files from ', directory)
 
@@ -15,10 +16,18 @@ def removeFiles(directory, argString, folder=False, verbose=False):
     for file in filelist:
         if(argString in file):
             fullfilepath = path.join(directory, file)
-            if(verbose):
-                print("Removing ", fullfilepath)
+            if(path.isdir(fullfilepath) & folder):
+                if(verbose):
+                    print("Removing folder ", fullfilepath)
+                try:
+                    removedirs(fullfilepath)
+                except OSError as err:
+                    print("Error.", err.strerror)
+            elif(path.isfile(fullfilepath)):
+                if(verbose):
+                    print("Removing ", fullfilepath)
 
-            remove(fullfilepath)
+                remove(fullfilepath)
 
 
 def removeFilesRecursive(directory, argString, folder=False, verbose=False):
@@ -186,20 +195,26 @@ def main():
     # executes actions for each option
     if(args.rmfile is not None):
         if (args.recursive is True):
-            removeFilesRecursive(absdir, args.rmfile[0], args.verbose)
+            removeFilesRecursive(absdir, args.rmfile[0], folder=args.folder,
+                                 verbose=args.verbose)
         else:
-            removeFiles(absdir, args.rmfile[0], args.verbose)
+            removeFiles(absdir, args.rmfile[0], folder=args.folder,
+                        verbose=args.verbose)
     elif(args.rmstr is not None):
         if(args.recursive is True):
-            removeStringRecursive(absdir, args.rmstr[0], args.verbose)
+            removeStringRecursive(absdir, args.rmstr[0], folder=args.folder,
+                                  verbose=args.verbose)
         else:
-            removeString(absdir, args.rmstr[0], args.verbose)
+            removeString(absdir, args.rmstr[0], folder=args.folder,
+                         verbose=args.verbose)
     elif(args.rpstr is not None):
         if(args.recursive is True):
             replaceStringRecursive(absdir, args.rpstr[0], args.rpstr[1],
-                                   args.verbose)
+                                   folder=args.folder,
+                                   verbose=args.verbose)
         else:
-            replaceString(absdir, args.rpstr[0], args.rpstr[1], args.verbose)
+            replaceString(absdir, args.rpstr[0], args.rpstr[1],
+                          folder=args.folder, verbose=args.verbose)
 
 
 # runs main program
