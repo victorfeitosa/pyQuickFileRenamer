@@ -5,7 +5,7 @@ import os
 from os import access, listdir, path, remove, rename, walk
 
 
-def removeFiles(directory, argString, verbose=False):
+def removeFiles(directory, argString, folder=False, verbose=False):
     """ Remove files from the directory that contain the string passed to
      the program. """
     if verbose:
@@ -21,7 +21,7 @@ def removeFiles(directory, argString, verbose=False):
             remove(fullfilepath)
 
 
-def removeFilesRecursive(directory, argString, verbose=False):
+def removeFilesRecursive(directory, argString, folder=False, verbose=False):
     """ Remove files recursively from the directory that contain the string
      passed to the program recursively. """
 
@@ -39,7 +39,7 @@ def removeFilesRecursive(directory, argString, verbose=False):
                 remove(fullfilepath)
 
 
-def removeString(directory, argString, verbose=False):
+def removeString(directory, argString, folder=False, verbose=False):
     """ Remove string from the files on the directory passed to
      the program. """
     if verbose:
@@ -60,7 +60,7 @@ def removeString(directory, argString, verbose=False):
             rename(fullfilepath, newfullpath)
 
 
-def removeStringRecursive(directory, argString, verbose=False):
+def removeStringRecursive(directory, argString, folder=False, verbose=False):
     """ Remove string from the files on the directory passed to
      the program recursively. """
     if verbose:
@@ -87,7 +87,8 @@ def removeStringRecursive(directory, argString, verbose=False):
                 rename(fullfilepath, newfullpath)
 
 
-def replaceString(directory, argString, replaceString, verbose=False):
+def replaceString(directory, argString, replaceString, folder=False,
+                  verbose=False):
     """ Replaces a string in the filenames passed as an argument
      to the program. """
     if verbose:
@@ -108,7 +109,8 @@ def replaceString(directory, argString, replaceString, verbose=False):
             rename(fullfilepath, newfullpath)
 
 
-def replaceStringRecursive(directory, argString, replaceString, verbose=False):
+def replaceStringRecursive(directory, argString, replaceString, folder=False,
+                           verbose=False):
     """ Replaces a string in the filenames passed as an argument
      to the program recursively. """
     if verbose:
