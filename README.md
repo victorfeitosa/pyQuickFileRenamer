@@ -31,4 +31,3 @@ qfr.py [-h] [-R] [-F] (-rm string | -rs string | -rp string) dir
 ---
 ## TODO
  - Implement functionalities
- - ask for permission if directory requires super user

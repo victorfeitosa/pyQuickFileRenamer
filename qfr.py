@@ -24,9 +24,19 @@ def removeFiles(directory, argString, verbose=False):
 def removeFilesRecursive(directory, argString, verbose=False):
     """ Remove files recursively from the directory that contain the string
      passed to the program recursively. """
-    print('Removing files...')
+
+    if verbose:
+        print('Removing files...')
+
     for (dirpath, dirname, filenames) in walk(directory):
-        print(filenames)
+        for file in filenames:
+            if(argString in file):
+                fullfilepath = path.join(dirpath, file)
+
+                if verbose:
+                    print(fullfilepath)
+                # finally, removes
+                remove(fullfilepath)
 
 
 def removeString(directory, argString, verbose=False):
@@ -53,9 +63,28 @@ def removeString(directory, argString, verbose=False):
 def removeStringRecursive(directory, argString, verbose=False):
     """ Remove string from the files on the directory passed to
      the program recursively. """
-    print('Removing string from files...')
+    if verbose:
+        print('Removing string from files...')
+
     for (dirpath, dirname, filenames) in walk(directory):
-        print(filenames)
+        for file in filenames:
+            # finally, removes string
+            if(argString in file):
+                fullfilepath = path.join(dirpath, file)
+
+                if(verbose):
+                    print("Renaming ", fullfilepath)
+
+                # replaces string for an empty character
+                newfilename = file.replace(argString, '')
+
+                # if filename is empty, add 'untitled' to it
+                if newfilename is '':
+                    newfilename = 'untitled'
+
+                # gets the new full path of the file, and then, renames it
+                newfullpath = path.join(dirpath, newfilename)
+                rename(fullfilepath, newfullpath)
 
 
 def replaceString(directory, argString, replaceString, verbose=False):
@@ -82,9 +111,28 @@ def replaceString(directory, argString, replaceString, verbose=False):
 def replaceStringRecursive(directory, argString, replaceString, verbose=False):
     """ Replaces a string in the filenames passed as an argument
      to the program recursively. """
-    print('Renaming files...')
+    if verbose:
+        print('Replacing string in files...')
+
     for (dirpath, dirname, filenames) in walk(directory):
-        print(filenames)
+        for file in filenames:
+            # finally, removes string
+            if(argString in file):
+                fullfilepath = path.join(dirpath, file)
+
+                if(verbose):
+                    print("Renaming ", fullfilepath)
+
+                # replaces string for an empty character
+                newfilename = file.replace(argString, replaceString)
+
+                # if filename is empty, add 'untitled' to it
+                if newfilename is '':
+                    newfilename = 'untitled'
+
+                # gets the new full path of the file, and then, renames it
+                newfullpath = path.join(dirpath, newfilename)
+                rename(fullfilepath, newfullpath)
 
 
 def main():
