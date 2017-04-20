@@ -112,6 +112,7 @@ def replaceStringRecursive(directory, argString, replaceString, folder=False,
                                                              newdirname))
 
 
+# Main function, responsible for parsing arguments and executing actions
 def main():
     """ Main function, used to parse arguments and execute actions """
 
