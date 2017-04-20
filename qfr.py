@@ -55,63 +55,6 @@ def removeFilesRecursive(directory, argString, folder=False, verbose=False):
                 print("Error.", err.strerror, dirpath)
 
 
-def removeString(directory, argString, folder=False, verbose=False):
-    """ Remove string from the files on the directory passed to
-     the program. """
-    if verbose:
-        print('Removing string from files from ', directory)
-
-    filelist = listdir(directory)
-    for file in filelist:
-        if(argString in file):
-            fullfilepath = path.join(directory, file)
-            if(path.isdir(fullfilepath) and not folder):
-                continue
-            if(verbose):
-                print("Renaming ", fullfilepath)
-
-            newfilename = file.replace(argString, '')
-            if newfilename is '':
-                newfilename = 'untitled'
-
-            newfullpath = path.join(directory, newfilename)
-            rename(fullfilepath, newfullpath)
-
-
-def removeStringRecursive(directory, argString, folder=False, verbose=False):
-    """ Remove string from the files on the directory passed to
-     the program recursively. """
-    if verbose:
-        print('Removing string from files...')
-
-    for (dirpath, dirname, filenames) in walk(directory, topdown=False):
-        for file in filenames:
-            # finally, removes string
-            if(argString in file):
-                fullfilepath = path.join(dirpath, file)
-
-                if(verbose):
-                    print("Renaming ", fullfilepath)
-
-                # replaces string for an empty character
-                newfilename = file.replace(argString, '')
-
-                # if filename is empty, add 'untitled' to it
-                if newfilename is '':
-                    newfilename = 'untitled'
-
-                # gets the new full path of the file, and then, renames it
-                newfullpath = path.join(dirpath, newfilename)
-                rename(fullfilepath, newfullpath)
-
-        # removes string from folder if enabled
-        if(folder):
-            for folder in dirname:
-                newdirname = folder.replace(argString, '')
-                rename(path.join(dirpath, folder), path.join(dirpath,
-                                                             newdirname))
-
-
 def replaceString(directory, argString, replaceString, folder=False,
                   verbose=False):
     """ Replaces a string in the filenames passed as an argument
@@ -139,9 +82,9 @@ def replaceStringRecursive(directory, argString, replaceString, folder=False,
     """ Replaces a string in the filenames passed as an argument
      to the program recursively. """
     if verbose:
-        print('Replacing string in files...')
+        print('Replacing string in filenames...')
 
-    for (dirpath, dirname, filenames) in walk(directory):
+    for (dirpath, dirname, filenames) in walk(directory, topdown=False):
         for file in filenames:
             # finally, removes string
             if(argString in file):
@@ -160,6 +103,13 @@ def replaceStringRecursive(directory, argString, replaceString, folder=False,
                 # gets the new full path of the file, and then, renames it
                 newfullpath = path.join(dirpath, newfilename)
                 rename(fullfilepath, newfullpath)
+
+        # removes string from folder if enabled
+        if(folder):
+            for folder in dirname:
+                newdirname = folder.replace(argString, replaceString)
+                rename(path.join(dirpath, folder), path.join(dirpath,
+                                                             newdirname))
 
 
 def main():
@@ -221,11 +171,11 @@ def main():
                         verbose=args.verbose)
     elif(args.rmstr is not None):
         if(args.recursive is True):
-            removeStringRecursive(absdir, args.rmstr[0], folder=args.folder,
-                                  verbose=args.verbose)
+            replaceStringRecursive(absdir, args.rmstr[0], '',
+                                   folder=args.folder, verbose=args.verbose)
         else:
-            removeString(absdir, args.rmstr[0], folder=args.folder,
-                         verbose=args.verbose)
+            replaceString(absdir, args.rmstr[0], '', folder=args.folder,
+                          verbose=args.verbose)
     elif(args.rpstr is not None):
         if(args.recursive is True):
             replaceStringRecursive(absdir, args.rpstr[0], args.rpstr[1],
