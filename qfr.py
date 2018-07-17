@@ -5,7 +5,7 @@ import os
 from os import access, listdir, path, rename, remove, removedirs, walk
 
 
-def removeFiles(directory='./', argString, folder=False, verbose=False):
+def removeFiles(directory, argString, folder=False, verbose=False):
     """ Remove files from the directory that contain the string passed to
      the program. """
 
@@ -30,7 +30,7 @@ def removeFiles(directory='./', argString, folder=False, verbose=False):
                 remove(fullfilepath)
 
 
-def removeFilesRecursive(directory='./', argString, folder=False, verbose=False):
+def removeFilesRecursive(directory, argString, folder=False, verbose=False):
     """ Remove files recursively from the directory that contain the string
      passed to the program recursively. """
 
@@ -55,7 +55,7 @@ def removeFilesRecursive(directory='./', argString, folder=False, verbose=False)
                 print("Error.", err.strerror, dirpath)
 
 
-def replaceString(directory='./', argString, replaceString, folder=False,
+def replaceString(directory, argString, replaceString, folder=False,
                   verbose=False):
     """ Replaces a string in the filenames passed as an argument
      to the program. """
@@ -77,7 +77,7 @@ def replaceString(directory='./', argString, replaceString, folder=False,
             rename(fullfilepath, newfullpath)
 
 
-def replaceStringRecursive(directory='./', argString, replaceString, folder=False,
+def replaceStringRecursive(directory, argString, replaceString, folder=False,
                            verbose=False):
     """ Replaces a string in the filenames passed as an argument
      to the program recursively. """
