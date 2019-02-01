@@ -138,8 +138,7 @@ def main():
                         help='Verbose mode.')
 
     # Add mutually exclusive arguments into a group
-    argGroup = parser.add_mutually_exclusive_group()
-    argGroup.required = True
+    argGroup = parser.add_mutually_exclusive_group(required=True)
     argGroup.add_argument('-rm', '--removefile', dest='rmfile', nargs=1,
                           metavar='string',
                           help='Removes a file based on a string search.',)
