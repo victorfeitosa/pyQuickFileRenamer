@@ -142,9 +142,9 @@ def main():
     argGroup.add_argument('-rm', '--removefile', dest='rmfile', nargs=1,
                           metavar='string',
                           help='Removes a file based on a string search.',)
-    argGroup.add_argument('-rs', '--removestring', dest='rmstr', nargs=1,
+    argGroup.add_argument('-tr', '--trimstring', dest='trstr', nargs=1,
                           metavar='string',
-                          help='Removes a string from the filename based on ' +
+                          help='Trims a string out from the filename based on ' +
                           'a string search')
     argGroup.add_argument('-rp', '--replacestring', dest='rpstr', nargs=2,
                           metavar='string',
@@ -169,12 +169,12 @@ def main():
         else:
             removeFiles(absdir, args.rmfile[0], folder=args.folder,
                         verbose=args.verbose)
-    elif(args.rmstr is not None):
+    elif(args.trstr is not None):
         if(args.recursive is True):
-            replaceStringRecursive(absdir, args.rmstr[0], '',
+            replaceStringRecursive(absdir, args.trstr[0], '',
                                    folder=args.folder, verbose=args.verbose)
         else:
-            replaceString(absdir, args.rmstr[0], '', folder=args.folder,
+            replaceString(absdir, args.trstr[0], '', folder=args.folder,
                           verbose=args.verbose)
     elif(args.rpstr is not None):
         if(args.recursive is True):
