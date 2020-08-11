@@ -70,7 +70,7 @@ def replaceString(directory, argString, replaceString, folder=False,
                 print("Renaming ", fullfilepath)
 
             newfilename = file.replace(argString, replaceString)
-            if newfilename is '':
+            if newfilename == '':
                 newfilename = 'untitled'
 
             newfullpath = path.join(directory, newfilename)
@@ -97,7 +97,7 @@ def replaceStringRecursive(directory, argString, replaceString, folder=False,
                 newfilename = file.replace(argString, replaceString)
 
                 # if filename is empty, add 'untitled' to it
-                if newfilename is '':
+                if newfilename == '':
                     newfilename = 'untitled'
 
                 # gets the new full path of the file, and then, renames it
